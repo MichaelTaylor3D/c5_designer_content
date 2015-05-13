@@ -628,12 +628,14 @@ class BlockGenerator {
 				$code .= "\t?>\n";
 				$code .= "</div>\n\n";
 			}
+
 			
 			if ($field['type'] == 'wysiwyg') {
 				$code .= "<div class=\"ccm-block-field-group\">\n";
 				$code .= "\t<h2>{$field['label']}</h2>\n";
-				$code .= "\t<?php Loader::element('editor_controls'); ?>\n";
-				$code .= "\t<textarea id=\"field_{$field['num']}_wysiwyg_content\" name=\"field_{$field['num']}_wysiwyg_content\" class=\"ccm-advanced-editor\"><?php echo \$field_{$field['num']}_wysiwyg_content; ?></textarea>\n";
+				/*$code .= "\t<?php Loader::element('editor_controls'); ?>\n";*/
+				/*$code .= "\t<textarea id=\"field_{$field['num']}_wysiwyg_content\" name=\"field_{$field['num']}_wysiwyg_content\" class=\"ccm-advanced-editor\"><?php echo \$field_{$field['num']}_wysiwyg_content; ?></textarea>\n";*/
+				$code .= "\t<?php \$editor = Core::make('editor');\n\t print \$editor->outputStandardEditor(field_{$field['num']}_wysiwyg_content);\n?>";
 				$code .= "</div>\n\n";
 				$include_editor_config = true;
 			}

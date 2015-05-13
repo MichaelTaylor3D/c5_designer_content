@@ -8,6 +8,8 @@ use CollectionAttributeKey;
 use BlockType;
 use Route;
 use View;
+use Plugin;
+use \Core;
 use \Concrete\Package\DesignerContent\Libraries\BlockGenerator as DesignerContentBlockGenerator;
 
 defined('C5_EXECUTE') or die(_("Access Denied."));
@@ -19,9 +21,9 @@ class Controller extends \Concrete\Core\Package\Package {
 	protected $pkgVersion = '4.0';
 
 	public function on_start()	{
-	   Route::register('/validate_handle', '\Concrete\Package\DesignerContent\Controller\SinglePage\Dashboard\Blocks\ValidateHandle::validate');
+	    Route::register('/validate_handle', '\Concrete\Package\DesignerContent\Controller\SinglePage\Dashboard\Blocks\ValidateHandle::validate');
 	}
-	
+
 	public function getPackageName() {
 		return t("Designer Content"); 
 	}	

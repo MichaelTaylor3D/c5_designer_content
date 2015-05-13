@@ -11,13 +11,13 @@
 
 		$text = preg_replace_callback(
 			'/{CCM:FID_([0-9]+)}/i',
-			array('[[[GENERATOR_REPLACE_CLASSNAME]]]', 'replaceFileIDInEditMode'),
+			array($this, 'replaceFileIDInEditMode'),
 			$text);
 
 
 		$text = preg_replace_callback(
 			'/{CCM:FID_DL_([0-9]+)}/i',
-			array('[[[GENERATOR_REPLACE_CLASSNAME]]]', 'replaceDownloadFileIDInEditMode'),
+			array($this, 'replaceDownloadFileIDInEditMode'),
 			$text);
 
 
@@ -45,25 +45,25 @@
 
 		$text = preg_replace_callback(
 			'/{CCM:CID_([0-9]+)}/i',
-			array('[[[GENERATOR_REPLACE_CLASSNAME]]]', 'replaceCollectionID'),
+			array($this, 'replaceCollectionID'),
 			$text);
 
 		$text = preg_replace_callback(
 			'/<img [^>]*src\s*=\s*"{CCM:FID_([0-9]+)}"[^>]*>/i',
-			array('[[[GENERATOR_REPLACE_CLASSNAME]]]', 'replaceImageID'),
+			array($this, 'replaceImageID'),
 			$text);
 
 		// now we add in support for the files that we view inline
 		$text = preg_replace_callback(
 			'/{CCM:FID_([0-9]+)}/i',
-			array('[[[GENERATOR_REPLACE_CLASSNAME]]]', 'replaceFileID'),
+			array($this, 'replaceFileID'),
 			$text);
 
 		// now files we download
 
 		$text = preg_replace_callback(
 			'/{CCM:FID_DL_([0-9]+)}/i',
-			array('[[[GENERATOR_REPLACE_CLASSNAME]]]', 'replaceDownloadFileID'),
+			array($this, 'replaceDownloadFileID'),
 			$text);
 
 		return $text;
