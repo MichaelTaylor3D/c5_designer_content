@@ -1,4 +1,4 @@
-#Designer Content Converted to Concrete 5.7
+#Designer Content Converted to Concrete 5.7.4.1
 
 For some reason the core is requireing that /concrete/elements/editor_config.php to be available however Concrete 5.7.4.1 does not provide this file
 
