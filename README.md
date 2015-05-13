@@ -1,4 +1,5 @@
 #Designer Content Converted to Concrete 5.7
+WYSIWYG is still not working on this update
 
 This addon is available in the Concrete5 marketplace: <http://www.concrete5.org/marketplace/addons/designer-content/>
 
