@@ -1,17 +1,23 @@
-<?php defined('C5_EXECUTE') or die(_("Access Denied."));
+<?php 
+namespace Concrete\Package\DesignerContent\Controller\SinglePage\Dashboard\Blocks;
 
-class DashboardBlocksDesignerContentController extends Controller {
+use \Concrete\Core\Page\Controller\DashboardPageController;
+use Loader;
+use BlockType;
+use Environment;
+use View;
+use \Concrete\Package\DesignerContent\Libraries\BlockGenerator as DesignerContentBlockGenerator;
+
+defined('C5_EXECUTE') or die(_("Access Denied."));
+
+class DesignerContent extends DashboardPageController {
 	
 	public $helpers = array('form'); //makes form helper available to the single_page
 
 	function view() {
 		$html = Loader::helper('html');
-		$this->addHeaderItem($html->javascript('jquery.tmpl.min.js', 'designer_content'));
-		$this->addHeaderItem($html->javascript('designer_content_dashboard_ui.js', 'designer_content'));
-		$this->addHeaderItem($html->css('designer_content_dashboard_ui.css', 'designer_content'));
 		
-		$th = Loader::helper('concrete/urls'); 
-		$this->set('validate_handle_url', $th->getToolsURL('validate_handle', 'designer_content'));
+		$this->set('validate_handle_url', '/index.php/validate_handle');
 		
 		$generated_handle = $this->get('generated');
 		$generated_name = $this->block_name_for_handle($generated_handle);
@@ -19,6 +25,10 @@ class DashboardBlocksDesignerContentController extends Controller {
 		$this->set('generated_name', $generated_name);
 		
 		$this->set('can_write', is_writable(DIR_FILES_BLOCK_TYPES));
+
+		$this->addFooterItem($html->javascript('jquery.tmpl.min.js', 'designer_content'));
+		$this->addFooterItem($html->javascript('designer_content_dashboard_ui.js', 'designer_content'));
+		$this->addHeaderItem($html->css('designer_content_dashboard_ui.css', 'designer_content'));
 	}
 	
 	private function block_name_for_handle($handle) {
@@ -70,7 +80,7 @@ class DashboardBlocksDesignerContentController extends Controller {
 		$field_default_contents = $this->post('fieldDefaultContents');
 		
 		//Set up the code generator
-		Loader::library('block_generator', 'designer_content');
+		//Loader::library('block_generator', 'designer_content');
 		$block = new DesignerContentBlockGenerator();
 		if (defined('DESIGNER_CONTENT_FILE_CHMOD')) {
 			$block->set_chmod(DESIGNER_CONTENT_FILE_CHMOD);
@@ -103,20 +113,25 @@ class DashboardBlocksDesignerContentController extends Controller {
 		//Make+install block
 		$block->generate($handle, $name, $description);
 		$this->drop_existing_table($handle);
+
+		//clear environment cache so that block can be installed
+	$env = Environment::get();
+		$env->clearOverrideCache();
+
 		BlockType::installBlockType($handle);
 		
 		//Redirect back to view page so browser refresh doesn't trigger a re-generation
-		header('Location: ' . View::url("/dashboard/blocks/designer_content/?generated={$handle}"));
+		header('Location: ' . "/index.php/dashboard/blocks/designer_content/?generated={$handle}");
 		exit;
 	}
 	
 	private function drop_existing_table($handle) {
-		Loader::library('block_generator', 'designer_content');
+		//Loader::library('block_generator', 'designer_content');
 		$table_name = DesignerContentBlockGenerator::tablename($handle);
 		Loader::db()->Execute("DROP TABLE IF EXISTS {$table_name}"); //cannot use parameterized query here (it surrounds the table name in quotes which is a MySQL error)
 	}
 	
-	public function validate_unique_handle($handle) {
+	public static function validate_unique_handle($handle) {
 		$db = Loader::db();
 		
 		$pkg_exists = $db->GetOne("SELECT COUNT(*) FROM Packages WHERE pkgHandle = ?", array($handle));
@@ -128,8 +143,8 @@ class DashboardBlocksDesignerContentController extends Controller {
 		return (!$pkg_exists && !$block_exists && !$dir_exists);
 	}
 	
-	public function validate_unique_tablename_for_handle($handle) {
-		Loader::library('block_generator', 'designer_content');
+	public static function validate_unique_tablename_for_handle($handle) {
+		//Loader::library('block_generator', 'designer_content');
 		$tables = Loader::db()->MetaTables('TABLES');
 		$table_name = DesignerContentBlockGenerator::tablename($handle);
 		$table_exists = in_array($table_name, $tables);

@@ -1,9 +1,13 @@
-<?php   
+<?php  
+namespace Concrete\Package\DesignerContent\Libraries;
+
+use Loader; 
+
 defined('C5_EXECUTE') or die(_("Access Denied."));
 
 // NOTE: WE DO NO VALIDATION HERE!!!
 // MAKE SURE YOU VALIDATE THAT NOTHING IMPORTANT IS GETTING OVERWRITTEN BEFORE USING THIS!!!!!
-class DesignerContentBlockGenerator {
+class BlockGenerator {
 	
 	private $fields = array();
 	
@@ -298,7 +302,8 @@ class DesignerContentBlockGenerator {
 		//END sub-template replacement
 		
 		//Replace class properties
-		$template = str_replace('[[[GENERATOR_REPLACE_CLASSNAME]]]', $this->controllername($this->handle), $template);
+		$template = str_replace('[[[GENERATOR_REPLACE_BLOCK_NAME]]]', str_replace('BlockController', '', $this->controllername($this->handle)), $template);
+		$template = str_replace('[[[GENERATOR_REPLACE_CLASSNAME]]]', 'Controller', $template);
 		$template = str_replace('[[[GENERATOR_REPLACE_TABLEDEF]]]', ($this->has_editable_fields() ? "\tprotected \$btTable = '".$this->tablename($this->handle)."';\n\t" : "\t"), $template);
 		$template = str_replace('[[[GENERATOR_REPLACE_NAME]]]', $this->addslashes_single($this->name), $template);
 		$template = str_replace('[[[GENERATOR_REPLACE_DESCRIPTION]]]', $this->addslashes_single($this->description), $template);
@@ -822,11 +827,11 @@ class DesignerContentBlockGenerator {
 		//		(as a precaution because we now overwrite existing tables,
 		//		 so hopefully this prefix "namespaces" our generated tables
 		//		 enough to avoid conflicting with some other legitemate table).
-		return 'btDC' . DesignerContentBlockGenerator::camelcase($handle);
+		return 'btDC' . BlockGenerator::camelcase($handle);
 	}
 	
 	public static function controllername($handle) {
-		return DesignerContentBlockGenerator::camelcase($handle) . 'BlockController';
+		return BlockGenerator::camelcase($handle) . 'BlockController';
 	}
 	
 	public static function camelcase($handle) {

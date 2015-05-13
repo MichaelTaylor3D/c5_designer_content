@@ -1,4 +1,8 @@
-<?php defined('C5_EXECUTE') or die("Access Denied.");
+<?php  
+namespace Application\Block\[[[GENERATOR_REPLACE_BLOCK_NAME]]];
+
+use Concrete\Core\Block\BlockController;
+use View;
 
 class [[[GENERATOR_REPLACE_CLASSNAME]]] extends BlockController {
 	

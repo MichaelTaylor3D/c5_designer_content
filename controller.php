@@ -1,10 +1,26 @@
-<?php defined('C5_EXECUTE') or die(_("Access Denied."));
+<?php 
+namespace Concrete\Package\DesignerContent;
 
-class DesignerContentPackage extends Package {
+use Loader;
+use Page;
+use SinglePage;
+use CollectionAttributeKey;
+use BlockType;
+use Route;
+use View;
+use \Concrete\Package\DesignerContent\Libraries\BlockGenerator as DesignerContentBlockGenerator;
+
+defined('C5_EXECUTE') or die(_("Access Denied."));
+
+class Controller extends \Concrete\Core\Package\Package {
 	
 	protected $pkgHandle = 'designer_content';
-	protected $appVersionRequired = '5.5.2';
-	protected $pkgVersion = '3.2';
+	protected $appVersionRequired = '5.7';
+	protected $pkgVersion = '4.0';
+
+	public function on_start()	{
+	   Route::register('/validate_handle', '\Concrete\Package\DesignerContent\Controller\SinglePage\Dashboard\Blocks\ValidateHandle::validate');
+	}
 	
 	public function getPackageName() {
 		return t("Designer Content"); 

@@ -1,24 +1,40 @@
 $(document).ready(function() {
-	$('a.add-field-type').live('click', add_new_field);
+	update_addfield_links();
 	
-	$('.designer-content-field-move-up a').live('click', move_field_up);
-	$('.designer-content-field-move-down a').live('click', move_field_down);
+	$('body').on('click', 'a.add-field-type', add_new_field); 
 	
-	$('a.designer-content-field-delete').live('click', toggle_delete_confirmation);
-	$('a.designer-content-field-delete-no').live('click', toggle_delete_confirmation);
-	$('a.designer-content-field-delete-yes').live('click', delete_field);
-
-	$('a.designer-content-field-duplicate').live('click', duplicate_field);
+	$('.designer-content-field-move-up').on('click', 'a', move_field_up);
+	$('.designer-content-field-move-down').on('click', 'a', move_field_down);
 	
-	$('.designer-content-field-image-sizing-dropdown').live('change', toggle_field_image_sizing);
-	$('.designer-content-field-image-link-dropdown').live('change', toggle_field_image_link);
+	$('a.designer-content-field-delete').on('click', 'a', toggle_delete_confirmation);
+	$('body').on('click', 'a.designer-content-field-delete-no', toggle_delete_confirmation);
+	$('body').on('click', 'a.designer-content-field-delete-yes', delete_field);
 	
-	$('.designer-content-field-select-header').live('change', toggle_field_select_header);
+	$('body').on('click', '.designer-content-field-image-sizing-dropdown', toggle_field_image_sizing);
+	$('body').on('click', '.designer-content-field-image-link-dropdown', toggle_field_image_link);
+	
+	$('body').on('click', '.designer-content-field-select-header', toggle_field_select_header);
 	
 	$('#designer-content-submit').click(function() {
 		$('#designer-content-form').submit(); //We use a div instead of a submit button because we don't want the "enter" key triggering the form
 	});
 	$('#designer-content-form').submit(function() {
+		// //TEST MODE (posts form via ajax so you don't lose data entry):
+		// var valid = validate_form();
+		// if (valid) {
+		// 	$.ajax({
+		// 		type: 'POST',
+		// 		async: false,
+		// 		url: CCM_REL + '/index.php/dashboard/blocks/designer_content/generate_block/',
+		// 		data: $('#designer-content-form').serialize(),
+		// 		success: function() {
+		// 			alert('ok!');
+		// 		}
+		// 	});
+		// }
+		// return false;
+		// //END TEST MODE
+		
 		$('#designer-content-submit').hide();
 		$('#designer-content-submit-loading').show();
 		var valid = validate_form(); //function will alert user to problems
@@ -33,6 +49,10 @@ $(document).ready(function() {
 	
 });
 
+function update_addfield_links() {
+	$("#add-field-types").html($("#add-field-types-template").tmpl());
+}
+
 function add_new_field() {
 	var type = $(this).attr('data-type');
 	if (type.length > 0) {
@@ -42,6 +62,7 @@ function add_new_field() {
 			'label': FIELDTYPE_LABELS[type]
 		};
 		$("#field-template").tmpl(data).appendTo("#designer-content-fields").effect("highlight", {}, 500);
+		update_addfield_links();
 		update_move_links();
 	}
 	
@@ -109,83 +130,11 @@ function delete_field() {
 	var id = $(this).attr('data-id');
 	$('.designer-content-field[data-id='+id+']').slideUp('fast', function() {
 		$(this).remove();
+		update_addfield_links();
 		update_move_links();
 	});
 	
 	return false;
-}
-
-function duplicate_field() {
-	//add block of same type
-	var type = $(this).attr('data-type');
-	var parentId = $(this).attr('data-id')
-	if (type.length > 0) {
-		var data = {
-			'id': new_field_row_id(),
-			'type': type,
-			'label': FIELDTYPE_LABELS[type]
-		};
-		$("#field-template").tmpl(data).insertAfter($(this).closest('.designer-content-field')).effect("highlight", {}, 500);
-		update_move_links();
-		duplicate_field_settings(parentId, data.id);
-	}
-	return false;
-}
-
-function duplicate_field_settings(fromId, toId) {
-	var $from = $('.designer-content-field[data-id="' + fromId + '"]');
-	var $to = $('.designer-content-field[data-id="' + toId + '"]');
-	
-	var fieldType = $from.attr('data-type');
-	
-	if ($to.attr('data-type') != fieldType) {
-		return;
-	}
-	
-	$.each([
-		'fieldStaticHtml',
-		'fieldLabels',
-		'fieldSelectOptions',
-		'fieldSelectShowHeaders',
-		'fieldSelectHeaderTexts',
-		'fieldsRequired',
-		'fieldPrefixes',
-		'fieldSuffixes',
-		'fieldDefaultContents',
-		'fieldTextboxMaxlengths',
-		'fieldUrlTargets',
-		'fieldDateFormats',
-		'fieldImageShowAltTexts',
-		'fieldImageLinks',
-		'fieldImageLinkTargets',
-		'fieldImageSizings',
-		'fieldImageWidths',
-		'fieldImageHeights'
-	], function(i, domId) {
-		var fromSelector = '#' + domId + '\\[' + fromId + '\\]'; //jquery needs double-slashes before square brackets in selectors, otherwise it won't find them
-		var toSelector = '#' + domId + '\\[' + toId + '\\]';     //ditto
-		var $fromField = $from.find(fromSelector);
-		var $toField = $to.find(toSelector);
-		if ($fromField.attr('type') == 'checkbox') {
-			$toField.prop('checked', $fromField.prop('checked'));
-		} else if (domId == 'fieldLabels') {
-			$toField.val($fromField.val() + ' copy');
-		} else {
-			$toField.val($fromField.val());
-		}
-	});
-	
-	//Call the "toggle" methods on some field types
-	// to show/hide fields based on some dropdown values
-	// (note that we use "call" to explicitly set "this" in the called functions
-	// to the dom element they should operate on -- we do this to simulate
-	// how jQuery does its "on"/"live" event callbacks).
-	if (fieldType == 'image') {
-		toggle_field_image_sizing.call($to.find('.designer-content-field-image-sizing-dropdown').get(0));
-		toggle_field_image_link.call($to.find('.designer-content-field-image-link-dropdown').get(0));
-	} else if (fieldType == 'select') {
-		toggle_field_select_header.call($to.find('.designer-content-field-select-header').get(0));
-	}
 }
 
 function toggle_field_image_sizing() {
