@@ -1,6 +1,6 @@
 #Designer Content Converted to Concrete 5.7.4.1
 
-For some reason the core is requireing that /concrete/elements/editor_config.php to be available however Concrete 5.7.4.1 does not provide this file
+**This requires version 5.7.4 or greater
 
 This addon is available in the Concrete5 marketplace: <http://www.concrete5.org/marketplace/addons/designer-content/>
 
