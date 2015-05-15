@@ -2,6 +2,8 @@
 
 ***This requires version 5.7.4 or greater***
 
+
+***Old Readme***
 This addon is available in the Concrete5 marketplace: <http://www.concrete5.org/marketplace/addons/designer-content/>
 
 Designer Content is an addon for the Concrete5 CMS that provides an easy-to-use dashboard interface for generating custom block types. See the marketplace link above for a more in-depth explanation of what it's used for, as well as thorough end-user documentation (click the "Documentation" link in the sidebar).
