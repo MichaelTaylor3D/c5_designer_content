@@ -7,6 +7,7 @@ $(document).ready(function() {
 	$('.designer-content-field-move-down').on('click', 'a', move_field_down);
 	
 	$('a.designer-content-field-delete').on('click', 'a', toggle_delete_confirmation);
+	$('body').on('click', 'a.designer-content-field-delete', toggle_delete_confirmation);
 	$('body').on('click', 'a.designer-content-field-delete-no', toggle_delete_confirmation);
 	$('body').on('click', 'a.designer-content-field-delete-yes', delete_field);
 	
