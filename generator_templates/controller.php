@@ -3,6 +3,9 @@ namespace Application\Block\[[[GENERATOR_REPLACE_BLOCK_NAME]]];
 
 use Concrete\Core\Block\BlockController;
 use View;
+use File;
+use stdClass;
+
 
 class [[[GENERATOR_REPLACE_CLASSNAME]]] extends BlockController {
 	

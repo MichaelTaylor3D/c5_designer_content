@@ -252,11 +252,11 @@ function validate_handle(handle) {
 		'async': false, //must be synchronous otherwise outer function returns before response is received from server
 		success: function(response) {
 			//dev note: call parseInt on the response because some servers are returning whitespace before/after the number
-			if (parseInt(response) == 2) {
-				valid = confirm(ERROR_MESSAGES['table_exists']);
-			} else if (parseInt(response) == 1) {
+			//if (parseInt(response) == 2) {
+			//	valid = confirm(ERROR_MESSAGES['table_exists']);
+			//} else if (parseInt(response) == 1) {
 				valid = true;
-			}
+			//}
 		}
 	});
 
