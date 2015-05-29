@@ -5,6 +5,7 @@ use Concrete\Core\Block\BlockController;
 use View;
 use File;
 use stdClass;
+use Loader;
 
 
 class [[[GENERATOR_REPLACE_CLASSNAME]]] extends BlockController {
