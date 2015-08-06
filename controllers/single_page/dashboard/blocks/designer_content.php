@@ -6,7 +6,7 @@ use Loader;
 use BlockType;
 use Environment;
 use View;
-use \Concrete\Package\DesignerContent\Libraries\BlockGenerator as DesignerContentBlockGenerator;
+use \Concrete\Package\DesignerContent\Src\BlockGenerator\BlockGenerator as DesignerContentBlockGenerator;
 
 defined('C5_EXECUTE') or die(_("Access Denied."));
 
@@ -17,7 +17,7 @@ class DesignerContent extends DashboardPageController {
 	function view() {
 		$html = Loader::helper('html');
 		
-		$this->set('validate_handle_url', '/index.php/validate_handle');
+		$this->set('validate_handle_url', BASE_URL.'/index.php/validate_handle');
 		
 		$generated_handle = $this->get('generated');
 		$generated_name = $this->block_name_for_handle($generated_handle);
@@ -121,7 +121,7 @@ class DesignerContent extends DashboardPageController {
 		BlockType::installBlockType($handle);
 		
 		//Redirect back to view page so browser refresh doesn't trigger a re-generation
-		header('Location: ' . "/index.php/dashboard/blocks/designer_content/?generated={$handle}");
+		header('Location: ' . BASE_URL . "/index.php/dashboard/blocks/designer_content/?generated={$handle}");
 		exit;
 	}
 	

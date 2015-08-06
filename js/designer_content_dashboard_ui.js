@@ -18,6 +18,7 @@ $(document).ready(function() {
 	$('#designer-content-submit').click(function() {
 		$('#designer-content-form').submit(); //We use a div instead of a submit button because we don't want the "enter" key triggering the form
 	});
+
 	$('#designer-content-form').submit(function() {
 		// //TEST MODE (posts form via ajax so you don't lose data entry):
 		// var valid = validate_form();
@@ -244,7 +245,7 @@ function validate_form() {
 }
 
 function validate_handle(handle) {
-	var valid = false;
+    var valid = false;
 	$.ajax({
 		'url': VALIDATE_HANDLE_URL,
 		'method': 'get',

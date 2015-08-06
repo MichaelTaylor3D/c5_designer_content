@@ -19,7 +19,6 @@ class ValidateHandle extends Controller
     {
       	if (!empty($_GET['handle'])) {
 			$handle = $_GET['handle'];
-		
 			if (DesignerContent::validate_unique_handle($handle)) {
 				if (DesignerContent::validate_unique_tablename_for_handle($handle)) {
 					echo "1";
