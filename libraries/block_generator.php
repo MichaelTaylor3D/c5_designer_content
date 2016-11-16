@@ -633,7 +633,7 @@ class BlockGenerator {
 			if ($field['type'] == 'wysiwyg') {
 				$code .= "<div class=\"ccm-block-field-group\">\n";
 				$code .= "\t<h2>{$field['label']}</h2>\n";
-				$code .= "\t<?php print Core::make('editor')->outputStandardEditor('field_{$field['num']}_wysiwyg_content'); ?>\n";
+				$code .= "\t<?php print Core::make('editor')->outputStandardEditor('field_{$field['num']}_wysiwyg_content', \$field_{$field['num']}_wysiwyg_content); ?>\n";
 				$code .= "</div>\n\n";
 				$include_editor_config = false;
 			}
