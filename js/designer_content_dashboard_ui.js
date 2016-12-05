@@ -3,8 +3,8 @@ $(document).ready(function() {
 	
 	$('body').on('click', 'a.add-field-type', add_new_field); 
 	
-	$('.designer-content-field-move-up').on('click', 'a', move_field_up);
-	$('.designer-content-field-move-down').on('click', 'a', move_field_down);
+	$('body').on('click', '.designer-content-field-move-up a', move_field_up);
+	$('body').on('click', '.designer-content-field-move-down a', move_field_down);
 
 	$('body').on('click', 'a.designer-content-field-delete', toggle_delete_confirmation);
 	$('body').on('click', 'a.designer-content-field-delete-no', toggle_delete_confirmation);
